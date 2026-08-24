@@ -1,0 +1,7 @@
+.DS_Store
+node_modules/
+.env
+.netlify/
+
+# 未在网站中使用的大文件，不需要进 git
+Commander sur votre smartphone.pdf

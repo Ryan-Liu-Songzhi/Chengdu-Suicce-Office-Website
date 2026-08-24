@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Chengdu 成都 — Cuisine sichuanaise & asiatique à Fribourg</title>
+  <meta name="description" content="Restaurant Chengdu à Fribourg : cuisine asiatique traditionnelle et spécialités du Sichuan. Commandez en ligne à l'emporter, paiement sur place. Boulevard de Pérolles 30, à 5 minutes de la gare.">
+  <link rel="icon" href="images/chengdu.JPG">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 公告横幅（内容在 js/config.js 里修改） -->
+  <div id="announceBanner" class="announce-banner" role="status">
+    <strong id="announceBannerTitle"></strong><span id="announceBannerMsg"></span>
+    <button class="announce-close" id="announceBannerClose" aria-label="Fermer">✕</button>
+  </div>
+
+  <!-- 公告弹窗 -->
+  <div id="announceOverlay" class="announce-overlay">
+    <div class="announce-popup" id="announcePopup" role="dialog" aria-modal="true">
+      <div class="icon" id="announcePopupIcon">📢</div>
+      <h3 id="announcePopupTitle"></h3>
+      <p id="announcePopupMsg"></p>
+      <button id="announcePopupClose">J'ai compris</button>
+    </div>
+  </div>
+
+  <!-- 大公告板弹窗（内容在 js/config.js 的 popup 里修改） -->
+  <div id="grandOverlay" class="grand-overlay">
+    <div class="grand-popup" id="grandPopup" role="dialog" aria-modal="true" aria-labelledby="grandTitle">
+      <button class="grand-close" id="grandClose" aria-label="Fermer">✕</button>
+      <div class="grand-head"><span class="grand-icon" id="grandIcon">🎉</span></div>
+      <div class="grand-card">
+        <h2 id="grandTitle"></h2>
+        <div class="grand-body" id="grandBody"></div>
+        <a class="grand-btn" id="grandBtn" href="#"></a>
+      </div>
+      <div class="grand-foot"></div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/chengdu.JPG" alt="Logo Restaurant Chengdu">
+        <span>
+          <span class="brand-name">Chengdu</span><br>
+          <span class="brand-sub">Fribourg</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="active">Accueil</a>
+        <a href="index.html#apropos">Le restaurant</a>
+        <a href="index.html#carte">La carte</a>
+        <a href="menu.html">Notre carte 菜单</a>
+        <a href="index.html#contact">Horaires & contact</a>
+        <a href="commander.html" class="btn-order">Commander en ligne</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 英雄区 -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <span class="hero-kicker">Cuisine du Sichuan · Fribourg</span>
+        <h1>Les saveurs authentiques de <span class="cn">Chengdu</span></h1>
+        <p>Une cuisine asiatique traditionnelle combinée à un style moderne, à cinq minutes à pied de la gare de Fribourg.</p>
+        <div class="hero-actions">
+          <a href="commander.html" class="btn-primary">🥡 Commander à l'emporter</a>
+          <a href="#carte" class="btn-ghost">Découvrir la carte</a>
+          <a href="#contact" class="btn-ghost">Réserver</a>
+        </div>
+        <div class="hero-badges">
+          <span class="hero-badge"><span>🕐</span> Prêt en 30 minutes</span>
+          <span class="hero-badge"><span>💳</span> Paiement sur place</span>
+          <span class="hero-badge"><span>📍</span> Bd de Pérolles 30</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-frame">
+          <img src="images/R2.jpg" alt="L'ambiance de fête au Restaurant Chengdu">
+          <span class="frame-caption">🏮 L'ambiance Chengdu</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主推菜聚光灯（在 js/config.js 的 signatureDish 里修改） -->
+  <section class="sig-section" id="signature">
+    <div class="container" id="signatureSpotHome"></div>
+  </section>
+
+  <!-- 关于 -->
+  <section class="section" id="apropos">
+    <div class="container about-grid">
+      <div class="food-gallery-wrap">
+        <button type="button" class="gallery-nav prev" id="galleryPrev" aria-label="Précédent">‹</button>
+        <div class="food-gallery" id="foodGallery">
+          <a class="gallery-item" href="commander.html#dish-83">
+            <img src="images/plat1.jpg" alt="Soupe de nouilles aux crevettes 虾咖喱汤面">
+            <span class="gallery-cap">N°83 · Soupe de nouilles aux crevettes</span>
+          </a>
+          <a class="gallery-item" href="commander.html#dish-51">
+            <img src="images/plat2.jpg" alt="Canard rôti désossé 烧鸭">
+            <span class="gallery-cap">N°51 · Canard rôti désossé</span>
+          </a>
+          <a class="gallery-item" href="commander.html#dish-91">
+            <img src="images/plat3.jpg" alt="Ma Po Tofu 香辣豆腐">
+            <span class="gallery-cap">N°91 · Ma Po Tofu</span>
+          </a>
+          <a class="gallery-item" href="commander.html#dish-61">
+            <img src="images/plat4.jpeg" alt="Crevettes à la sauce aigre-douce 糖醋虾">
+            <span class="gallery-cap">N°61 · Crevettes à la sauce aigre-douce</span>
+          </a>
+          <a class="gallery-item" href="commander.html#dish-S1">
+            <img src="images/plats/s1.webp" alt="Porc cuit en deux temps 回锅肉">
+            <span class="gallery-cap">S1 · Porc cuit en deux temps</span>
+          </a>
+          <a class="gallery-item" href="commander.html#dish-S4">
+            <img src="images/plats/s4.jpg" alt="Bœuf froid effiloché au concombre 凉拌黄瓜牛肉丝">
+            <span class="gallery-cap">S4 · Bœuf froid effiloché au concombre</span>
+          </a>
+        </div>
+        <button type="button" class="gallery-nav next" id="galleryNext" aria-label="Suivant">›</button>
+      </div>
+      <div class="about-text">
+        <span class="section-tag">Bienvenue 欢迎</span>
+        <h2 class="section-title">Un voyage culinaire au cœur du <span class="cn">Sichuan</span></h2>
+        <p>Notre chef expérimenté vous propose une cuisine asiatique riche et variée : grands classiques chinois, spécialités épicées du Sichuan, currys parfumés et canard laqué façon Pékin.</p>
+        <p>Dans un intérieur chaleureux aux hauts plafonds, ou à l'emporter pour savourer chez vous.</p>
+        <ul class="about-points">
+          <li>Viandes suisses — bœuf, porc et poulet de provenance locale</li>
+          <li>Spécialités sichuanaises préparées à la minute</li>
+          <li>Commande en ligne simple, sans création de compte</li>
+        </ul>
+        <a href="commander.html" class="btn-primary">Voir le menu & commander</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 菜单 -->
+  <section class="section" id="carte" style="background:#fff;">
+    <div class="container">
+      <span class="section-tag">Notre carte 菜单</span>
+      <h2 class="section-title">La carte du restaurant</h2>
+      <p style="color:var(--ink-soft);max-width:640px;">Consultez nos cartes complètes en PDF, ou commandez directement en ligne vos plats à l'emporter.</p>
+      <div class="menu-cards">
+        <div class="menu-card highlight">
+          <span class="icon">🥡</span>
+          <h3>Commander en ligne</h3>
+          <p>Choisissez vos plats, indiquez l'heure de retrait et payez sur place. Simple et rapide, sans compte.</p>
+          <a href="commander.html" class="link">Commander maintenant →</a>
+        </div>
+        <div class="menu-card">
+          <span class="icon">🍜</span>
+          <h3>Carte des mets</h3>
+          <p>Entrées, potages, spécialités du Sichuan, suggestions du chef et desserts — TVA incluse.</p>
+          <a href="menus/carte-plats.pdf" target="_blank" class="link">Télécharger le PDF →</a>
+        </div>
+        <div class="menu-card">
+          <span class="icon">🍵</span>
+          <h3>Carte des boissons</h3>
+          <p>Thés chinois, bières asiatiques, vins et boissons fraîches pour accompagner votre repas.</p>
+          <a href="menus/carte-boissons.pdf" target="_blank" class="link">Télécharger le PDF →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 营业时间 & 联系 -->
+  <section class="section" id="contact">
+    <div class="container">
+      <span class="section-tag">Infos pratiques 信息</span>
+      <h2 class="section-title">Horaires & contact <span id="openBadge"></span></h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-body">
+            <h3>🕐 Heures d'ouverture</h3>
+            <table class="hours-table" id="hoursTable"></table>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-body">
+            <h3>📍 Nous trouver</h3>
+            <ul class="contact-list">
+              <li>
+                <span class="ico">🏠</span>
+                <div><strong>Adresse</strong>Boulevard de Pérolles 30, 1700 Fribourg<br><em style="color:var(--ink-soft);font-size:.9rem;">À 5 minutes à pied de la gare</em></div>
+              </li>
+
+              <li>
+                <span class="ico">📞</span>
+                <div><strong>Téléphone</strong><a href="tel:+41263211623">026 321 16 23</a><br><a href="tel:+41788353278">078 835 32 78</a></div>
+              </li>
+
+              <li>
+                <span class="ico">✉️</span>
+                <div><strong>E-mail</strong><a href="mailto:info@chengdu-suisse.ch">info@chengdu-suisse.ch</a></div>
+              </li>
+            </ul>
+          </div>
+          <iframe class="map-frame" title="Plan d'accès"
+            src="https://www.google.com/maps?q=Boulevard%20de%20P%C3%A9rolles%2030%2C%201700%20Fribourg&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="cta-strip">
+        <div>
+          <h2>Une envie de Sichuan ce soir ?</h2>
+          <p>Commandez en ligne, récupérez au restaurant — votre repas est prêt en 30 minutes.</p>
+        </div>
+        <a href="commander.html" class="btn-primary">Commander à l'emporter</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-name" style="color:#fff;">Restaurant Chengdu 成都</span>
+        <p>Cuisine asiatique traditionnelle combinée avec un style moderne, au cœur de Fribourg.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="menu.html">Notre carte 菜单</a></li>
+          <li><a href="commander.html">Commander en ligne</a></li>
+          <li><a href="menus/carte-plats.pdf" target="_blank">Carte des mets (PDF)</a></li>
+          <li><a href="menus/carte-boissons.pdf" target="_blank">Carte des boissons (PDF)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Bd de Pérolles 30, 1700 Fribourg</li>
+          <li><a href="tel:+41263211623">026 321 16 23</a></li>
+          <li><a href="mailto:info@chengdu-suisse.ch">info@chengdu-suisse.ch</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="year"></span> Restaurant Chengdu, Fribourg — Tous droits réservés</div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/menu-data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

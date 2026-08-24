@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notre carte — Restaurant Chengdu 成都 Fribourg</title>
+  <meta name="description" content="La carte complète du Restaurant Chengdu à Fribourg : menu Midi du jour, plats de saison, carte à la carte, menus spéciaux et boissons.">
+  <link rel="icon" href="images/chengdu.JPG">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 公告横幅 -->
+  <div id="announceBanner" class="announce-banner" role="status">
+    <strong id="announceBannerTitle"></strong><span id="announceBannerMsg"></span>
+    <button class="announce-close" id="announceBannerClose" aria-label="Fermer">✕</button>
+  </div>
+  <div id="announceOverlay" class="announce-overlay">
+    <div class="announce-popup" id="announcePopup" role="dialog" aria-modal="true">
+      <div class="icon" id="announcePopupIcon">📢</div>
+      <h3 id="announcePopupTitle"></h3>
+      <p id="announcePopupMsg"></p>
+      <button id="announcePopupClose">J'ai compris</button>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/chengdu.JPG" alt="Logo Restaurant Chengdu">
+        <span>
+          <span class="brand-name">Chengdu</span><br>
+          <span class="brand-sub">Fribourg</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#apropos">Le restaurant</a>
+        <a href="index.html#contact">Horaires & contact</a>
+        <a href="commander.html" class="btn-order">Commander en ligne</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 页头 -->
+  <section class="order-hero qr-hero">
+    <div class="container">
+      <h1>Notre carte 菜单</h1>
+      <p>Parcourez tous nos plats — menu Midi du jour, spécialités de saison, carte complète, menus de groupe et boissons.</p>
+      <span class="pay-note">🥡 Envie de commander à l'emporter ? <a href="commander.html" style="color:#fff;text-decoration:underline;">Commander en ligne →</a></span>
+    </div>
+  </section>
+
+  <!-- 堂食/外带提示条 -->
+  <div class="dine-mode-bar" id="dineModeBar">
+    <div class="container dine-mode-inner">
+      <p class="dine-mode-text" id="dineModeText"></p>
+      <button type="button" class="dine-mode-toggle" id="dineModeToggle"></button>
+    </div>
+  </div>
+
+  <!-- 分区导航 -->
+  <nav class="cat-nav">
+    <div class="container cat-nav-inner">
+      <button class="cat-chip" data-target="secMidi">🕐 Midi</button>
+      <button class="cat-chip" data-target="secSaison">🌱 Saison</button>
+      <button class="cat-chip" data-target="secCarte">🍜 Carte</button>
+      <button class="cat-chip" data-target="secMenus">🥂 Menus</button>
+      <button class="cat-chip" data-target="secBoissons">🍵 Boissons</button>
+    </div>
+  </nav>
+
+  <div class="container qr-menu-layout">
+
+    <!-- Menu Midi (今日自动显示) -->
+    <section class="menu-section" id="secMidi"></section>
+
+    <!-- 季节限定 -->
+    <section class="menu-section" id="secSaison"></section>
+
+    <!-- 日常菜单（à la carte） -->
+    <section id="secCarte">
+      <div class="menu-section-head">
+        <span class="icon">🍜</span>
+        <h2>La carte</h2>
+        <span class="cn">日常菜单</span>
+      </div>
+      <main id="menuSections"></main>
+    </section>
+
+    <!-- 套餐 -->
+    <section class="menu-section" id="secMenus"></section>
+
+    <!-- 酒水单 -->
+    <section class="menu-section" id="secBoissons"></section>
+
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-name" style="color:#fff;">Restaurant Chengdu 成都</span>
+        <p>Cuisine asiatique traditionnelle combinée avec un style moderne, au cœur de Fribourg.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="commander.html">Commander en ligne</a></li>
+          <li><a href="menus/carte-plats.pdf" target="_blank">Carte des mets (PDF)</a></li>
+          <li><a href="menus/carte-boissons.pdf" target="_blank">Carte des boissons (PDF)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Bd de Pérolles 30, 1700 Fribourg</li>
+          <li><a href="tel:+41263211623">026 321 16 23</a></li>
+          <li><a href="mailto:info@chengdu-suisse.ch">info@chengdu-suisse.ch</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="year"></span> Restaurant Chengdu, Fribourg</div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/menu-data.js"></script>
+  <script src="js/midi-menu.js"></script>
+  <script src="js/menu-qr-data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/menu-qr.js"></script>
+</body>
+</html>

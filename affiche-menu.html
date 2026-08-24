@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Affiche Menu — Restaurant Chengdu</title>
+<link rel="icon" href="images/chengdu.JPG">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C0555B;
+    --red-dark: #9C4247;
+    --gold: #C9A227;
+    --gold-soft: #F7EFD8;
+    --ink: #221B16;
+    --ink-soft: #6B5F55;
+    --paper: #FAF6EF;
+    --line: #E9E0D2;
+    --font-display: "Bodoni Moda", "Noto Serif SC", Georgia, serif;
+    --font-accent: "EB Garamond", "Noto Serif SC", Georgia, serif;
+    --font-sans: "Outfit", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 40px 0; background: #d7d2c7;
+    display: flex; flex-direction: column; align-items: center; gap: 40px;
+    font-family: var(--font-sans);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .a4-page {
+    background: var(--paper);
+    width: 210mm; height: 297mm;
+    padding: 16mm 18mm;
+    position: relative;
+    display: flex; flex-direction: column;
+    box-shadow: 0 25px 70px rgba(0,0,0,.28);
+    overflow: hidden;
+  }
+  @media print {
+    @page { size: A4; margin: 0; }
+    body { background: var(--paper); padding: 0; gap: 0; }
+    .a4-page { box-shadow: none; page-break-after: always; }
+  }
+
+  /* 双重画框：外层香槟金 + 内层胭脂红 */
+  .frame-outer { position: absolute; inset: 8mm; border: 1px solid var(--gold); pointer-events: none; z-index: 5; }
+  .frame-inner { position: absolute; inset: 9.6mm; border: 1.5px solid var(--red); pointer-events: none; z-index: 5; }
+
+  /* 角落小品牌标（第 1-3 页） */
+  .poster-brand {
+    position: absolute; top: 15mm; left: 17mm; z-index: 6;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .poster-brand img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 1px solid var(--gold); }
+  .poster-brand .pb-name { font-family: var(--font-display); font-weight: 700; font-size: .92rem; color: var(--ink); line-height: 1.1; }
+  .poster-brand .pb-sub { font-size: .55rem; letter-spacing: .28em; text-transform: uppercase; color: var(--gold); }
+  .poster-pageno {
+    position: absolute; top: 16mm; right: 18mm; z-index: 6;
+    font-family: var(--font-accent); font-style: italic; font-size: .78rem; color: var(--ink-soft);
+    letter-spacing: .05em;
+  }
+
+  .page-header { text-align: center; margin: 20px 0 22px; position: relative; }
+  .page-kicker {
+    display: inline-flex; align-items: center; gap: 12px;
+    color: var(--gold); letter-spacing: .32em; text-transform: uppercase;
+    font-size: .68rem; font-weight: 600; margin-bottom: 10px;
+  }
+  .page-kicker::before, .page-kicker::after { content: ""; width: 26px; height: 1px; background: var(--gold); }
+  .page-title { font-family: var(--font-display); font-weight: 700; font-size: 2.5rem; color: var(--red); letter-spacing: .04em; line-height: 1; }
+  .page-title .cn { color: var(--gold); font-size: 1.6rem; margin-left: 12px; font-weight: 600; }
+  .page-ornament { color: var(--gold); font-size: 1.1rem; margin-top: 6px; }
+
+  .content { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+
+  .dish-row { display: grid; grid-template-columns: 1fr 148px; gap: 26px; align-items: center; }
+  .dish-row.img-left { grid-template-columns: 148px 1fr; }
+  .dish-row.img-left .img-box { order: 1; }
+  .dish-row.img-left .menu-block { order: 2; }
+
+  .img-box {
+    width: 148px; height: 197px; flex-shrink: 0;
+    background: #fff; border: 4px solid #fff; outline: 1px solid var(--gold);
+    box-shadow: 0 14px 32px rgba(0,0,0,.14);
+    overflow: hidden; position: relative;
+  }
+  .img-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .img-box.solo { width: 100%; height: 220px; }
+
+  .menu-block { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+  .dish-entry .row-line { display: flex; align-items: baseline; gap: 8px; }
+  .dish-name { font-family: var(--font-display); font-weight: 600; font-size: 1.22rem; color: var(--ink); white-space: nowrap; }
+  .leader { flex-grow: 1; border-bottom: 1px dotted #c9bfae; margin-bottom: 5px; }
+  .dish-price { font-family: var(--font-display); font-weight: 700; font-size: 1.22rem; color: var(--red); white-space: nowrap; }
+  .dish-cn { font-family: var(--font-accent); font-size: .8rem; color: var(--ink-soft); margin-top: 1px; }
+  .dish-tag {
+    display: inline-block; font-size: .58rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--red); border: 1px solid var(--red); border-radius: 999px; padding: 1px 8px; margin-bottom: 4px;
+  }
+
+  .spicy-icon { width: 1.05em; height: 1.05em; vertical-align: -0.16em; margin-left: 3px; }
+  .veg-icon { width: .82em; height: .82em; vertical-align: -0.02em; margin-left: 5px; }
+
+  .extra-list { margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .extra-label {
+    font-family: var(--font-accent); font-style: italic; color: var(--gold);
+    font-size: .82rem; text-align: center; margin-bottom: 10px;
+  }
+  .extra-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 34px; }
+  .extra-entry { display: flex; align-items: baseline; gap: 6px; }
+  .extra-entry .dish-name { font-size: .96rem; }
+  .extra-entry .dish-price { font-size: .96rem; }
+
+  .page-footer-tag {
+    text-align: center; margin-top: 10px; font-family: var(--font-accent); font-style: italic;
+    color: var(--ink-soft); font-size: .78rem; letter-spacing: .04em;
+  }
+
+  /* 第 4 页 信息页 */
+  .info-page { align-items: center; justify-content: center; text-align: center; }
+  .info-logo { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); box-shadow: 0 14px 34px rgba(0,0,0,.14); margin-bottom: 18px; }
+  .info-title { font-family: var(--font-display); font-weight: 700; font-size: 2.4rem; color: var(--red); margin-bottom: 6px; }
+  .info-title .cn { color: var(--gold); font-size: 1.5rem; margin-left: 10px; }
+  .info-kicker {
+    display: inline-flex; align-items: center; gap: 12px; color: var(--gold);
+    letter-spacing: .3em; text-transform: uppercase; font-size: .72rem; font-weight: 600; margin: 14px 0 26px;
+  }
+  .info-kicker::before, .info-kicker::after { content: ""; width: 28px; height: 1px; background: var(--gold); }
+  .qr-wrapper { background: #fff; padding: 16px; border: 1px solid var(--gold); box-shadow: 0 14px 34px rgba(0,0,0,.1); }
+  .qr-wrapper img { width: 190px; height: 190px; display: block; }
+  .hours-block { margin-top: 34px; width: 100%; max-width: 420px; }
+  .hours-title {
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: .2em; font-size: 1.05rem;
+    color: var(--red); border-bottom: 1px solid var(--gold); padding-bottom: 10px; margin-bottom: 18px; display: inline-block;
+  }
+  .hours-title .cn { color: var(--gold); font-size: .85rem; margin-left: 8px; }
+  .hours-row { display: flex; justify-content: space-between; font-family: var(--font-display); margin-bottom: 10px; }
+  .hours-day { font-weight: 600; font-size: 1.12rem; color: var(--ink); }
+  .hours-time { font-size: 1rem; color: var(--ink-soft); }
+  .info-phone { margin-top: 26px; font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; color: var(--ink); letter-spacing: .02em; }
+  .info-phone .sep { color: #c9bfae; font-weight: 300; margin: 0 12px; }
+  .info-address { margin-top: 10px; font-family: var(--font-accent); color: var(--ink-soft); font-size: .92rem; }
+</style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1 : ENTRÉES / 前菜 ================= -->
+  <div class="a4-page">
+    <div class="frame-outer"></div><div class="frame-inner"></div>
+    <div class="poster-brand">
+      <img src="images/chengdu.JPG" alt="Chengdu">
+      <span><span class="pb-name">Chengdu</span><br><span class="pb-sub">Fribourg</span></span>
+    </div>
+    <div class="poster-pageno">01 · 04</div>
+
+    <header class="page-header">
+      <p class="page-kicker">Starter Collection</p>
+      <h1 class="page-title">Entrées <span class="cn">前菜</span></h1>
+      <div class="page-ornament">✧</div>
+    </header>
+
+    <div class="content">
+      <div class="dish-row">
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Assortiment Chengdu (6 pièces différent)</span><span class="leader"></span><span class="dish-price">14.-</span></div>
+            <div class="dish-cn">成都拼盘 · sélection de nos meilleures entrées</div>
+          </div>
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Potage "Won-Ton" Maison</span><span class="leader"></span><span class="dish-price">8.-</span></div>
+            <div class="dish-cn">云吞汤 · le classique pékinois, aigre et relevé</div>
+          </div>
+        </div>
+        <div class="img-box"><img src="images/plats/n12.jpg" alt="Potage aigre piquant"></div>
+      </div>
+
+      <div class="dish-row img-left">
+        <div class="img-box"><img src="images/plats/n23.jpeg" alt="Salade de crevettes"></div>
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Salade de crevettes (Sauce Maison)</span><span class="leader"></span><span class="dish-price">12.-</span></div>
+            <div class="dish-cn">虾沙拉 · crevettes et légumes croquants</div>
+          </div>
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Nems</span><span class="leader"></span><span class="dish-price">9.-</span></div>
+            <div class="dish-cn">越南卷 · rouleaux vietnamiens au porc et légumes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dish-row">
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Edamame</span><svg class="veg-icon" viewBox="0 0 24 24" aria-label="végétarien"><path d="M4 20C4 10 12 4 21 4c0 9-7 17-17 17-1.4 0-1.4-.2 0-1z" fill="#4C8C4A"/><path d="M6.5 17.5C11 13 15 9 18.5 5.5" stroke="#365F35" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg><span class="leader"></span><span class="dish-price">6.-</span></div>
+            <div class="dish-cn">水煮毛豆 · fèves de soja vapeur, fleur de sel</div>
+          </div>
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Raviolis frits (Vapeur légumes)</span><span class="leader"></span><span class="dish-price">8.-</span></div>
+            <div class="dish-cn">炸云吞 · won-ton dorés et croustillants</div>
+          </div>
+        </div>
+        <div class="img-box"><img src="images/menu-qr/saison-edamame.jpg" alt="Edamame"></div>
+      </div>
+
+      <div class="extra-list">
+        <p class="extra-label">également à la carte 更多前菜</p>
+        <div class="extra-grid">
+          <div class="extra-entry"><span class="dish-name">Rouleaux de printemps</span><span class="leader"></span><span class="dish-price">8.-</span></div>
+          <div class="extra-entry"><span class="dish-name">Samousa</span><span class="leader"></span><span class="dish-price">9.-</span></div>
+          <div class="extra-entry"><span class="dish-name">Raviolis aux légumes</span><span class="leader"></span><span class="dish-price">10.-</span></div>
+          <div class="extra-entry"><span class="dish-name">Raviolis grillés</span><span class="leader"></span><span class="dish-price">10.-</span></div>
+          <div class="extra-entry"><span class="dish-name">Beignets de crevettes</span><span class="leader"></span><span class="dish-price">9.-</span></div>
+          <div class="extra-entry"><span class="dish-name">Raviolis crevettes vapeur</span><span class="leader"></span><span class="dish-price">9.-</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2 : PLATS SPÉCIAUX / 特色菜 ================= -->
+  <div class="a4-page">
+    <div class="frame-outer"></div><div class="frame-inner"></div>
+    <div class="poster-brand">
+      <img src="images/chengdu.JPG" alt="Chengdu">
+      <span><span class="pb-name">Chengdu</span><br><span class="pb-sub">Fribourg</span></span>
+    </div>
+    <div class="poster-pageno">02 · 04</div>
+
+    <header class="page-header">
+      <p class="page-kicker">Signature Specialities</p>
+      <h1 class="page-title">Plats Spéciaux <span class="cn">特色菜</span></h1>
+      <div class="page-ornament">✧</div>
+    </header>
+
+    <div class="content" style="gap:10px;">
+      <div class="dish-row">
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Crevettes sur ardoise</span><span class="leader"></span><span class="dish-price">26.-</span></div>
+            <div class="dish-cn">N°65 · 铁板虾 · servies grésillantes sur plaque chaude</div>
+          </div>
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Porc cinq épices</span><span class="leader"></span><span class="dish-price">25.-</span></div>
+            <div class="dish-cn">椒盐排骨 · travers de porc sel et poivre<svg class="spicy-icon" viewBox="0 0 24 24" aria-label="épicé"><path d="M12.3 3.4c1-.7 2.3-.9 3.4-.4.3.1.3.6 0 .8-.9.5-1.5 1.1-1.8 1.8.5-.1 1-.1 1.4.1.3.1.3.5.1.7-.6.5-1 1-1.3 1.6.4 0 .8.1 1.1.3.3.2.3.5 0 .7-2.2 1.7-3.6 3.2-3.9 4.3z" fill="#4E8C3F"/><path d="M13.6 6.7c2 .4 3.7 1.9 4.3 3.9 1 3.4-.5 7.5-3.6 10-2.8 2.2-6.2 2.3-8.1.3-1.7-1.8-1.4-4.8.7-7.4C8.6 10.9 11 8.9 13.6 6.7z" fill="#E2373E"/><path d="M14.6 8.6c1 1.2 1.4 2.9 1 4.5" stroke="#F28B85" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+        <div class="img-box"><img src="images/plats/n65.jpg" alt="Crevettes sur ardoise"></div>
+      </div>
+
+      <div class="dish-row img-left">
+        <div class="img-box"><img src="images/plats/n92.jpg" alt="Tofu maison"></div>
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Tofu maison</span><span class="leader"></span><span class="dish-price">23.-</span></div>
+            <div class="dish-cn">特色豆腐 · tofu spécial du chef</div>
+          </div>
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Cuisses de grenouilles</span><span class="leader"></span><span class="dish-price">26.-</span></div>
+            <div class="dish-cn">椒盐田鸡 · sel et poivre, cinq épices<svg class="spicy-icon" viewBox="0 0 24 24" aria-label="épicé"><path d="M12.3 3.4c1-.7 2.3-.9 3.4-.4.3.1.3.6 0 .8-.9.5-1.5 1.1-1.8 1.8.5-.1 1-.1 1.4.1.3.1.3.5.1.7-.6.5-1 1-1.3 1.6.4 0 .8.1 1.1.3.3.2.3.5 0 .7-2.2 1.7-3.6 3.2-3.9 4.3z" fill="#4E8C3F"/><path d="M13.6 6.7c2 .4 3.7 1.9 4.3 3.9 1 3.4-.5 7.5-3.6 10-2.8 2.2-6.2 2.3-8.1.3-1.7-1.8-1.4-4.8.7-7.4C8.6 10.9 11 8.9 13.6 6.7z" fill="#E2373E"/><path d="M14.6 8.6c1 1.2 1.4 2.9 1 4.5" stroke="#F28B85" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dish-row">
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Pot d'aubergines aux vermicelles</span><svg class="veg-icon" viewBox="0 0 24 24" aria-label="végétarien"><path d="M4 20C4 10 12 4 21 4c0 9-7 17-17 17-1.4 0-1.4-.2 0-1z" fill="#4C8C4A"/><path d="M6.5 17.5C11 13 15 9 18.5 5.5" stroke="#365F35" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg><span class="leader"></span><span class="dish-price">25.-</span></div>
+            <div class="dish-cn">粉丝茄子煲 · mijoté en casserole traditionnelle</div>
+          </div>
+        </div>
+        <div class="img-box"><img src="images/plats/n94.jpeg" alt="Pot d'aubergines aux vermicelles"></div>
+      </div>
+
+      <div class="dish-row img-left">
+        <div class="img-box"><img src="images/plats/n95.jpg" alt="Bœuf en casserole"></div>
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Bœuf en casserole</span><span class="leader"></span><span class="dish-price">26.-</span></div>
+            <div class="dish-cn">牛腩煲 · poitrine de bœuf mijotée en pot</div>
+          </div>
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Légumes season sautés à l'ail</span><svg class="veg-icon" viewBox="0 0 24 24" aria-label="végétarien"><path d="M4 20C4 10 12 4 21 4c0 9-7 17-17 17-1.4 0-1.4-.2 0-1z" fill="#4C8C4A"/><path d="M6.5 17.5C11 13 15 9 18.5 5.5" stroke="#365F35" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg><span class="leader"></span><span class="dish-price">22.-</span></div>
+            <div class="dish-cn">蒜蓉青菜 · légumes de saison, ail frais</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 3 : SUGGESTIONS DU CHEF / 主厨推荐 ================= -->
+  <div class="a4-page">
+    <div class="frame-outer"></div><div class="frame-inner"></div>
+    <div class="poster-brand">
+      <img src="images/chengdu.JPG" alt="Chengdu">
+      <span><span class="pb-name">Chengdu</span><br><span class="pb-sub">Fribourg</span></span>
+    </div>
+    <div class="poster-pageno">03 · 04</div>
+
+    <header class="page-header">
+      <p class="page-kicker">Chef's Recommendations</p>
+      <h1 class="page-title">Suggestions <span class="cn">主厨推荐</span></h1>
+      <div class="page-ornament">✧</div>
+    </header>
+
+    <div class="content">
+      <div class="dish-row">
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Porc cuit en deux temps</span><span class="leader"></span><span class="dish-price">25.-</span></div>
+            <div class="dish-cn">回锅肉 · Hui Guo Rou, poivrons et poireau<svg class="spicy-icon" viewBox="0 0 24 24" aria-label="épicé"><path d="M12.3 3.4c1-.7 2.3-.9 3.4-.4.3.1.3.6 0 .8-.9.5-1.5 1.1-1.8 1.8.5-.1 1-.1 1.4.1.3.1.3.5.1.7-.6.5-1 1-1.3 1.6.4 0 .8.1 1.1.3.3.2.3.5 0 .7-2.2 1.7-3.6 3.2-3.9 4.3z" fill="#4E8C3F"/><path d="M13.6 6.7c2 .4 3.7 1.9 4.3 3.9 1 3.4-.5 7.5-3.6 10-2.8 2.2-6.2 2.3-8.1.3-1.7-1.8-1.4-4.8.7-7.4C8.6 10.9 11 8.9 13.6 6.7z" fill="#E2373E"/><path d="M14.6 8.6c1 1.2 1.4 2.9 1 4.5" stroke="#F28B85" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg></div>
+          </div>
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Aubergine « au goût de poisson »</span><span class="leader"></span><span class="dish-price">25.-</span></div>
+            <div class="dish-cn">鱼香茄子 · sauce Yu Xiang à l'ail<svg class="spicy-icon" viewBox="0 0 24 24" aria-label="épicé"><path d="M12.3 3.4c1-.7 2.3-.9 3.4-.4.3.1.3.6 0 .8-.9.5-1.5 1.1-1.8 1.8.5-.1 1-.1 1.4.1.3.1.3.5.1.7-.6.5-1 1-1.3 1.6.4 0 .8.1 1.1.3.3.2.3.5 0 .7-2.2 1.7-3.6 3.2-3.9 4.3z" fill="#4E8C3F"/><path d="M13.6 6.7c2 .4 3.7 1.9 4.3 3.9 1 3.4-.5 7.5-3.6 10-2.8 2.2-6.2 2.3-8.1.3-1.7-1.8-1.4-4.8.7-7.4C8.6 10.9 11 8.9 13.6 6.7z" fill="#E2373E"/><path d="M14.6 8.6c1 1.2 1.4 2.9 1 4.5" stroke="#F28B85" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+        <div class="img-box"><img src="images/plats/s1.webp" alt="Porc cuit en deux temps"></div>
+      </div>
+
+      <div class="dish-row img-left">
+        <div class="img-box"><img src="images/plats/s4.jpg" alt="Bœuf froid effiloché au concombre"></div>
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Bœuf froid effiloché au concombre</span><span class="leader"></span><span class="dish-price">27.-</span></div>
+            <div class="dish-cn">凉拌黄瓜牛肉丝 · entrée froide rafraîchissante<svg class="spicy-icon" viewBox="0 0 24 24" aria-label="épicé"><path d="M12.3 3.4c1-.7 2.3-.9 3.4-.4.3.1.3.6 0 .8-.9.5-1.5 1.1-1.8 1.8.5-.1 1-.1 1.4.1.3.1.3.5.1.7-.6.5-1 1-1.3 1.6.4 0 .8.1 1.1.3.3.2.3.5 0 .7-2.2 1.7-3.6 3.2-3.9 4.3z" fill="#4E8C3F"/><path d="M13.6 6.7c2 .4 3.7 1.9 4.3 3.9 1 3.4-.5 7.5-3.6 10-2.8 2.2-6.2 2.3-8.1.3-1.7-1.8-1.4-4.8.7-7.4C8.6 10.9 11 8.9 13.6 6.7z" fill="#E2373E"/><path d="M14.6 8.6c1 1.2 1.4 2.9 1 4.5" stroke="#F28B85" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg></div>
+          </div>
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Poulet citronnelle</span><span class="leader"></span><span class="dish-price">23.-</span></div>
+            <div class="dish-cn">香茅鸡 · sauté à la citronnelle, parfum délicat</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dish-row">
+        <div class="menu-block">
+          <div class="dish-entry">
+            <div class="row-line"><span class="dish-name">Poulet à la sauce épicée</span><span class="leader"></span><span class="dish-price">25.-</span></div>
+            <div class="dish-cn">麻辣鸡 · tranches de poulet Ma La<svg class="spicy-icon" viewBox="0 0 24 24" aria-label="épicé"><path d="M12.3 3.4c1-.7 2.3-.9 3.4-.4.3.1.3.6 0 .8-.9.5-1.5 1.1-1.8 1.8.5-.1 1-.1 1.4.1.3.1.3.5.1.7-.6.5-1 1-1.3 1.6.4 0 .8.1 1.1.3.3.2.3.5 0 .7-2.2 1.7-3.6 3.2-3.9 4.3z" fill="#4E8C3F"/><path d="M13.6 6.7c2 .4 3.7 1.9 4.3 3.9 1 3.4-.5 7.5-3.6 10-2.8 2.2-6.2 2.3-8.1.3-1.7-1.8-1.4-4.8.7-7.4C8.6 10.9 11 8.9 13.6 6.7z" fill="#E2373E"/><path d="M14.6 8.6c1 1.2 1.4 2.9 1 4.5" stroke="#F28B85" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg></div>
+          </div>
+        </div>
+        <div class="img-box"><img src="images/plats/s5.jpeg" alt="Poulet à la sauce épicée"></div>
+      </div>
+
+      <div class="dish-row img-left">
+        <div class="img-box"><img src="images/plats/plat2.jpg" alt="Canard rôti désossé"></div>
+        <div class="menu-block">
+          <div class="dish-entry">
+            <span class="dish-tag">La spécialité de la maison</span>
+            <div class="row-line"><span class="dish-name">Canard rôti désossé (Avec 6-8 crêpes)</span><span class="leader"></span><span class="dish-price">24.-</span></div>
+            <div class="dish-cn">烧鸭 · canard laqué, désossé</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 4 : INFOS & QR CODE ================= -->
+  <div class="a4-page info-page">
+    <div class="frame-outer"></div><div class="frame-inner"></div>
+
+    <img class="info-logo" src="images/chengdu.JPG" alt="Restaurant Chengdu">
+    <h2 class="info-title">Bienvenue <span class="cn">欢迎光临</span></h2>
+    <p class="info-kicker">Scannez pour voir notre carte</p>
+
+    <div class="qr-wrapper"><img src="images/qr-menu.png" alt="QR Code — Menu Restaurant Chengdu"></div>
+
+    <div class="hours-block">
+      <span class="hours-title">Heures d'ouverture <span class="cn">营业时间</span></span>
+      <div class="hours-row">
+        <span class="hours-day">Lundi – Samedi</span>
+        <span class="hours-time">10:30 – 14:30 &nbsp;/&nbsp; 17:15 – 22:00</span>
+      </div>
+      <div class="hours-row">
+        <span class="hours-day">Dimanche</span>
+        <span class="hours-time">11:00 – 14:30</span>
+      </div>
+    </div>
+
+    <p class="info-phone">📞 026 321 16 23<span class="sep">|</span>078 835 32 78</p>
+    <p class="info-address">Bd de Pérolles 30, 1700 Fribourg</p>
+  </div>
+
+</body>
+</html>

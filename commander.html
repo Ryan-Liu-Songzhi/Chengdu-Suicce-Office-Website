@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commander en ligne — Restaurant Chengdu 成都 Fribourg</title>
+  <meta name="description" content="Commandez vos plats à l'emporter au Restaurant Chengdu à Fribourg. Choisissez l'heure de retrait, payez sur place. Sans création de compte.">
+  <link rel="icon" href="images/chengdu.JPG">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 公告横幅 -->
+  <div id="announceBanner" class="announce-banner" role="status">
+    <strong id="announceBannerTitle"></strong><span id="announceBannerMsg"></span>
+    <button class="announce-close" id="announceBannerClose" aria-label="Fermer">✕</button>
+  </div>
+  <div id="announceOverlay" class="announce-overlay">
+    <div class="announce-popup" id="announcePopup" role="dialog" aria-modal="true">
+      <div class="icon" id="announcePopupIcon">📢</div>
+      <h3 id="announcePopupTitle"></h3>
+      <p id="announcePopupMsg"></p>
+      <button id="announcePopupClose">J'ai compris</button>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img class="brand-logo" src="images/chengdu.JPG" alt="Logo Restaurant Chengdu">
+        <span>
+          <span class="brand-name">Chengdu</span><br>
+          <span class="brand-sub">Fribourg</span>
+        </span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#apropos">Le restaurant</a>
+        <a href="menu.html">Notre carte 菜单</a>
+        <a href="index.html#contact">Horaires & contact</a>
+        <a href="commander.html" class="btn-order">Commander en ligne</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 点餐页头部 -->
+  <section class="order-hero">
+    <div class="container">
+      <h1>Commander à l'emporter 🥡</h1>
+      <p>Choisissez vos plats, indiquez l'heure de retrait souhaitée et venez chercher votre commande au restaurant.</p>
+      <span class="pay-note">💳 Paiement uniquement sur place — espèces ou carte</span>
+    </div>
+  </section>
+
+  <!-- 分类导航 -->
+  <nav class="cat-nav">
+    <div class="container cat-nav-inner" id="catNav"></div>
+  </nav>
+
+  <!-- 菜单 + 购物车 -->
+  <div class="container order-layout">
+    <main class="menu-sections" id="menuSections"></main>
+
+    <aside class="cart-panel" id="cartPanel">
+      <div class="cart-head">
+        <h3>Votre commande</h3>
+        <span class="cart-count-badge" id="cartCountBadge">0</span>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-foot">
+        <div class="cart-total"><span>Total</span><span id="cartTotal">CHF 0.00</span></div>
+        <button class="btn-checkout" id="btnCheckout" disabled>Passer la commande</button>
+        <button class="btn-clear-cart" id="btnClearCart" style="display:none;">🗑 Vider le panier</button>
+        <p class="cart-note">Paiement sur place · TVA incluse</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 手机端浮动购物车按钮 -->
+  <button class="cart-fab" id="cartFab">
+    🛒 Voir ma commande <span class="fab-count" id="fabCount">0</span>
+  </button>
+
+  <!-- 结账弹层 -->
+  <div class="checkout-overlay" id="checkoutOverlay">
+    <div class="checkout-sheet" id="checkoutSheet">
+      <button class="sheet-close" id="sheetClose" aria-label="Fermer">✕</button>
+
+      <!-- 第一步：购物车确认（手机端） / 表单 -->
+      <div id="checkoutForm">
+        <h2>Finaliser la commande</h2>
+        <p class="sub">Aucun compte nécessaire — quelques informations suffisent.</p>
+
+        <div class="order-summary" id="checkoutSummary"></div>
+        <button type="button" class="btn-clear-cart" id="btnClearCart2" style="margin:-10px 0 14px;">🗑 Vider le panier</button>
+
+        <div class="pay-info">💳 <span><strong>Paiement sur place</strong> au moment du retrait — espèces ou carte. Aucun paiement en ligne.</span></div>
+
+        <form id="orderForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fName">Nom, Prénom <span class="req">*</span></label>
+              <input type="text" id="fName" name="name" autocomplete="name" placeholder="Votre nom">
+              <p class="field-error" id="errName">Veuillez indiquer votre nom.</p>
+            </div>
+            <div class="form-group">
+              <label for="fPhone">Téléphone <span class="req">*</span></label>
+              <input type="tel" id="fPhone" name="phone" autocomplete="tel" placeholder="079 123 45 67">
+              <p class="field-error" id="errPhone">Veuillez indiquer un numéro de téléphone valide.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fEmail">E-mail <span class="opt">(facultatif)</span></label>
+            <input type="email" id="fEmail" name="email" autocomplete="email" placeholder="vous@exemple.ch">
+            <p class="field-error" id="errEmail">Cette adresse e-mail ne semble pas valide.</p>
+          </div>
+          <div class="pickup-box">
+            <div class="pickup-box-title">🕐 Choisissez votre heure de retrait</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fDay">Jour de retrait <span class="req">*</span></label>
+                <select id="fDay"></select>
+              </div>
+              <div class="form-group">
+                <label for="fTime">Heure de retrait <span class="req">*</span></label>
+                <select id="fTime"></select>
+                <p class="field-error" id="errTime">Veuillez choisir une heure de retrait.</p>
+              </div>
+            </div>
+            <p class="pickup-preview" id="pickupPreview"></p>
+          </div>
+          <div class="form-group">
+            <label for="fNotes">Remarques <span class="opt">(allergies, sans coriandre…)</span></label>
+            <textarea id="fNotes" rows="2" placeholder="Remarques pour la cuisine"></textarea>
+          </div>
+          <button type="submit" class="btn-checkout" id="btnSubmit">Confirmer la commande</button>
+        </form>
+      </div>
+
+      <!-- 第二步：确认页 -->
+      <div id="checkoutConfirm" style="display:none;">
+        <div class="confirm-box">
+          <div class="big">✅</div>
+          <h2>Merci, votre commande est enregistrée !</h2>
+          <span class="order-no" id="confirmOrderNo"></span>
+          <p id="confirmPickup"></p>
+          <p>Nous vous appellerons uniquement en cas de question.<br>
+             <strong>Paiement sur place</strong> au moment du retrait.</p>
+          <p style="font-size:.88rem;" id="confirmMailNote"></p>
+          <button class="btn-checkout" id="btnNewOrder" style="margin-top:18px;">Retour au menu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-name" style="color:#fff;">Restaurant Chengdu 成都</span>
+        <p>Boulevard de Pérolles 30, 1700 Fribourg<br>026 321 16 23</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="menu.html">Notre carte 菜单</a></li>
+          <li><a href="index.html#contact">Horaires & contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>À l'emporter</h4>
+        <ul>
+          <li>Commande prête en 30 min</li>
+          <li>Paiement sur place</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© <span id="year"></span> Restaurant Chengdu, Fribourg</div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/menu-data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/order.js"></script>
+</body>
+</html>

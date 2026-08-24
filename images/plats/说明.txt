@@ -1,0 +1,1 @@
+把菜品照片放在这个文件夹里（建议正方形、小于 500KB、文件名用英文或拼音，例如 poulet-sichuan.jpg），然后在 js/menu-data.js 里对应菜品的 photo 处填写文件名。
