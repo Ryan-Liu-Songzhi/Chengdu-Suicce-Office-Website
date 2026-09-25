@@ -78,6 +78,13 @@ button { font-family: inherit; cursor: pointer; }
 }
 .announce-close:hover { background: rgba(0,0,0,.3); }
 
+/* 点餐页顶部常驻提示条（不可关闭，见 js/config.js 的 mainDishRiceOffer） */
+.perk-banner {
+  display: none; text-align: center; font-size: .92rem; font-weight: 600;
+  padding: 11px 20px; background: linear-gradient(90deg, #B8860B, var(--gold)); color: #2B2109;
+}
+.perk-banner.visible { display: block; }
+
 .announce-overlay {
   position: fixed; inset: 0; z-index: 200;
   background: rgba(20, 12, 8, .55); backdrop-filter: blur(3px);

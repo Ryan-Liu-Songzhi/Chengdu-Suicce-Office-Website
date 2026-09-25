@@ -42,6 +42,16 @@
     renderDishControls(no);
   }
 
+  /* ---------- 点餐页顶部常驻提示条 ---------- */
+  function renderPerkBanner() {
+    const el = $("perkBanner");
+    const p = C.mainDishRiceOffer;
+    if (!el || !p || !p.enabled) return;
+    el.textContent = p.text;
+    el.classList.add("visible");
+  }
+  renderPerkBanner();
+
   /* ---------- 主推菜（在菜单里以特别栏目呈现，紧挨在"每周特价"之前） ---------- */
   function getSignatureDish() {
     if (!SIG) return null;
