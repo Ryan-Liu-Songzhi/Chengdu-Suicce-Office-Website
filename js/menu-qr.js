@@ -96,13 +96,22 @@
   }
 
   /* ---------- 日常菜单（à la carte，复用 menu-data.js） ---------- */
+  function catSlug(cat) { return "qsec-" + cat.category.toLowerCase().replace(/[^a-z0-9]+/g, "-"); }
+
   function renderCarte() {
     const holder = $("menuSections");
     if (!holder) return;
     const cats = (typeof MENU_DATA !== "undefined" ? MENU_DATA : []).filter((c) => c.items.length > 0);
+
+    // 二级快捷栏：La carte 里每个分类一个按钮（Entrées / Potages / Poulet…）
+    const subNav = $("subCatNavInner");
+    if (subNav) {
+      subNav.innerHTML = cats.map((cat) => `<button class="sub-cat-chip" data-target="${catSlug(cat)}">${cat.icon} ${cat.category}</button>`).join("");
+    }
+
     holder.innerHTML = cats.map((cat) => `
-      <section class="menu-section" id="qsec-${cat.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}">
-        <div class="menu-section-head">
+      <section class="menu-section" id="${catSlug(cat)}">
+        <div class="menu-section-head sub-head">
           <span class="icon">${cat.icon}</span>
           <h2>${cat.category}</h2>
           <span class="cn">${cat.categoryCn}</span>
@@ -239,7 +248,30 @@
       chip.addEventListener("click", () => {
         const el = $(chip.dataset.target);
         if (!el) return;
-        const y = el.getBoundingClientRect().top + window.scrollY - 150;
+        const bar = $("subCatNav");
+        const extra = bar && bar.classList.contains("visible") ? bar.offsetHeight : 0;
+        const y = el.getBoundingClientRect().top + window.scrollY - (150 + extra);
+        window.scrollTo({ top: y, behavior: "smooth" });
+      });
+    });
+  }
+
+  /* ---------- La carte 二级快捷栏：浏览到 La carte 范围内才出现 ---------- */
+  function initSubCatNav() {
+    const bar = $("subCatNav");
+    const carte = $("secCarte");
+    if (!bar || !carte || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => bar.classList.toggle("visible", entry.isIntersecting));
+    }, { rootMargin: "-140px 0px -55% 0px", threshold: 0 });
+    observer.observe(carte);
+
+    document.querySelectorAll(".sub-cat-chip[data-target]").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const el = $(chip.dataset.target);
+        if (!el) return;
+        const y = el.getBoundingClientRect().top + window.scrollY - (150 + bar.offsetHeight);
         window.scrollTo({ top: y, behavior: "smooth" });
       });
     });
@@ -251,5 +283,6 @@
   renderSetMenus();
   renderDrinks();
   initNav();
+  initSubCatNav();
   initDineMode();
 })();

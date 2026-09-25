@@ -473,6 +473,27 @@ button { font-family: inherit; cursor: pointer; }
 .menu-section-head .icon { font-size: 1.6rem; }
 .menu-section-head h2 { font-family: var(--font-display); font-size: 1.65rem; }
 .menu-section-head .cn { color: var(--red); font-size: 1.05rem; font-weight: 500; }
+/* 二级标题（La carte 里的 Entrées / Potages / Poulet…）：比顶级板块标题小一档，避免层级混淆 */
+.menu-section-head.sub-head { margin-bottom: 14px; gap: 10px; }
+.menu-section-head.sub-head .icon { font-size: 1.15rem; }
+.menu-section-head.sub-head h2 { font-size: 1.15rem; }
+.menu-section-head.sub-head .cn { font-size: .82rem; }
+
+/* La carte 二级快捷栏（只在滚动到 La carte 范围内才显示，见 menu-qr.js initSubCatNav） */
+.sub-cat-nav {
+  display: none; position: sticky; top: 137px; z-index: 45;
+  background: rgba(250, 246, 239, .97); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line); margin: 0 0 20px;
+}
+.sub-cat-nav.visible { display: block; }
+.sub-cat-nav-inner { display: flex; gap: 8px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
+.sub-cat-nav-inner::-webkit-scrollbar { display: none; }
+.sub-cat-chip {
+  flex: none; border: 1px solid var(--line); background: #fff;
+  border-radius: 999px; padding: 6px 14px; font-size: .82rem; font-weight: 500;
+  color: var(--ink-soft); white-space: nowrap; transition: all .2s;
+}
+.sub-cat-chip:hover { border-color: var(--red); color: var(--red); }
 
 .dish-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 .dish-card {
@@ -679,6 +700,20 @@ input.invalid, select.invalid { border-color: var(--red); background: #FDF3F2; }
   .btn-order { margin: 10px 26px 0; text-align: center; }
   .nav-toggle { display: block; }
   .dish-grid { grid-template-columns: 1fr; }
+  /* 扫码菜单（menu.html）手机端改两列浏览，图片挪到上方，方便左右快速扫一遍 */
+  .qr-menu-layout .dish-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .qr-menu-layout .dish-card { flex-direction: column; padding: 12px; gap: 8px; }
+  .qr-menu-layout .dish-photo { width: 100%; height: auto; aspect-ratio: 4 / 3; font-size: 1.6rem; }
+  .qr-menu-layout .dish-name { font-size: .86rem; }
+  .qr-menu-layout .dish-name .no { display: block; font-size: .74rem; margin-right: 0; }
+  .qr-menu-layout .dish-cn { font-size: .74rem; }
+  .qr-menu-layout .dish-desc {
+    font-size: .76rem; margin-top: 4px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .qr-menu-layout .dish-foot { margin-top: 8px; flex-wrap: wrap; gap: 4px; }
+  .qr-menu-layout .dish-price { font-size: .88rem; }
+  .qr-menu-layout .link-order { font-size: .8rem; }
   .form-row { grid-template-columns: 1fr; }
   .cta-strip { flex-direction: column; text-align: center; padding: 44px 28px; }
   .footer-inner { grid-template-columns: 1fr; gap: 30px; }
