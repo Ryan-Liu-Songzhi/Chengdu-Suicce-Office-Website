@@ -2,6 +2,14 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18296898600"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-18296898600');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Restaurant Chengdu 成都 — Cuisine sichuanaise & asiatique à Fribourg</title>
   <meta name="description" content="Restaurant Chengdu à Fribourg : cuisine asiatique traditionnelle et spécialités du Sichuan. Commandez en ligne à l'emporter, paiement sur place. Boulevard de Pérolles 30, à 5 minutes de la gare.">
@@ -74,7 +82,7 @@
         <div class="hero-actions">
           <a href="commander.html" class="btn-primary">🥡 Commander à l'emporter</a>
           <a href="#carte" class="btn-ghost">Découvrir la carte</a>
-          <a href="#contact" class="btn-ghost">Réserver</a>
+          <button type="button" class="btn-ghost" data-reserve-open="table">Réserver</button>
         </div>
         <div class="hero-badges">
           <span class="hero-badge"><span>🕐</span> Prêt en 30 minutes</span>
@@ -83,10 +91,35 @@
         </div>
       </div>
       <div class="hero-visual">
+        <div class="hero-frame hero-frame-secondary">
+          <img src="images/interieur-lanternes.jpg" alt="Intérieur chaleureux du Restaurant Chengdu, lanternes et guirlandes lumineuses">
+        </div>
         <div class="hero-frame">
           <img src="images/R2.jpg" alt="L'ambiance de fête au Restaurant Chengdu">
           <span class="frame-caption">🏮 L'ambiance Chengdu</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 秋季火锅推广（内容在 js/config.js 的 fondue 里修改；enabled:false 可整块隐藏） -->
+  <section class="fondue-section" id="fondue">
+    <div class="container fondue-grid">
+      <div class="fondue-photos">
+        <img src="images/fondue1.jpg" alt="Fondue chinoise à volonté, chaudron mijoté et ingrédients frais">
+        <img src="images/fondue2.jpg" alt="Assortiment de viandes, fruits de mer et légumes pour la fondue">
+      </div>
+      <div class="fondue-text">
+        <span class="section-tag">Automne · Édition limitée</span>
+        <h2 class="section-title">Fondue Chinoise <span class="cn">四川火锅</span></h2>
+        <p>Le grand retour de notre fondue chinoise, en formule self-service — viandes, fruits de mer, légumes frais et boulettes maison à cuire vous-même dans un bouillon mijoté à la sichuanaise.</p>
+        <span class="fondue-price-badge">🍲 38.- CHF / personne</span>
+        <ul class="about-points">
+          <li>Formule self-service à volonté</li>
+          <li>Boissons non comprises</li>
+          <li>Sur réservation uniquement</li>
+        </ul>
+        <button type="button" class="btn-primary" data-reserve-open="fondue">🍲 Réserver ma table fondue</button>
       </div>
     </div>
   </section>
@@ -254,8 +287,80 @@
     <div class="footer-bottom">© <span id="year"></span> Restaurant Chengdu, Fribourg — Tous droits réservés</div>
   </footer>
 
+  <!-- 预约订位弹层（普通订位 / 火锅订位） -->
+  <div class="checkout-overlay" id="reserveOverlay">
+    <div class="checkout-sheet" id="reserveSheet">
+      <button class="sheet-close" id="reserveClose" aria-label="Fermer">✕</button>
+
+      <div id="reserveForm">
+        <h2>Réserver une table</h2>
+        <p class="sub">Nous vous confirmons votre réservation par téléphone ou e-mail.</p>
+
+        <div class="reserve-tabs">
+          <button type="button" class="reserve-tab active" id="tabTable">🍽️ Table classique</button>
+          <button type="button" class="reserve-tab" id="tabFondue">🍲 Fondue chinoise</button>
+        </div>
+
+        <div class="fondue-note" id="fondueNote" style="display:none;"></div>
+
+        <form id="reserveFormEl" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="rName">Nom, Prénom <span class="req">*</span></label>
+              <input type="text" id="rName" autocomplete="name" placeholder="Votre nom">
+              <p class="field-error" id="rErrName">Veuillez indiquer votre nom.</p>
+            </div>
+            <div class="form-group">
+              <label for="rPhone">Téléphone <span class="req">*</span></label>
+              <input type="tel" id="rPhone" autocomplete="tel" placeholder="079 123 45 67">
+              <p class="field-error" id="rErrPhone">Veuillez indiquer un numéro de téléphone valide.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rEmail">E-mail <span class="opt">(facultatif)</span></label>
+            <input type="email" id="rEmail" autocomplete="email" placeholder="vous@exemple.ch">
+            <p class="field-error" id="rErrEmail">Cette adresse e-mail ne semble pas valide.</p>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="rPeople">Nombre de personnes <span class="req">*</span></label>
+              <select id="rPeople"></select>
+            </div>
+            <div class="form-group">
+              <label for="rDay">Jour souhaité <span class="req">*</span></label>
+              <select id="rDay"></select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rTime">Heure souhaitée <span class="req">*</span></label>
+            <select id="rTime"></select>
+            <p class="field-error" id="rErrTime">Veuillez choisir une heure.</p>
+          </div>
+          <div class="form-group">
+            <label for="rNotes">Remarques <span class="opt">(allergies, occasion spéciale…)</span></label>
+            <textarea id="rNotes" rows="2" placeholder="Remarques"></textarea>
+          </div>
+          <button type="submit" class="btn-checkout" id="rSubmit">Envoyer ma demande de réservation</button>
+        </form>
+      </div>
+
+      <div id="reserveConfirm" style="display:none;">
+        <div class="confirm-box">
+          <div class="big">✅</div>
+          <h2>Merci, votre demande est envoyée !</h2>
+          <span class="order-no" id="reserveConfirmDetail"></span>
+          <p>Nous vous confirmerons votre réservation par téléphone ou e-mail dans les meilleurs délais.</p>
+          <button class="btn-checkout" id="rNewReservation" style="margin-top:18px;">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
   <script src="js/config.js"></script>
   <script src="js/menu-data.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/reserve.js"></script>
 </body>
 </html>

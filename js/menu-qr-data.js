@@ -8,7 +8,7 @@
    季节限定 — Les Nouveaux de Saison
    ------------------------------------------------------------ */
 const SEASONAL_SPECIALS = {
-  enabled: true,
+  enabled: false, // 秋季已到，夏季系列暂时下架；等新一季菜品准备好后改回 true 并更新下面的 items 和 subtitle
   title: "Les nouveaux de saison",
   subtitle: "Collection d'Été",
   items: [

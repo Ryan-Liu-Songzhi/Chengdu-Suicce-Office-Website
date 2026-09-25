@@ -8,10 +8,17 @@
   const fmt = (n) => "CHF " + n.toFixed(2);
   const DAY_FR = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
+  // 分类下架时，顶部快捷跳转栏对应的按钮也一起隐藏，避免点了没反应
+  function setChip(target, visible) {
+    const chip = document.querySelector(`.cat-chip[data-target="${target}"]`);
+    if (chip) chip.style.display = visible ? "" : "none";
+  }
+
   /* ---------- Menu Midi（自动按今天星期几显示） ---------- */
   function renderMidi() {
     const holder = $("secMidi");
-    if (!holder || !MIDI_MENU || !MIDI_MENU.enabled) { if (holder) holder.style.display = "none"; return; }
+    if (!holder || !MIDI_MENU || !MIDI_MENU.enabled) { if (holder) holder.style.display = "none"; setChip("secMidi", false); return; }
+    setChip("secMidi", true);
 
     const todayIdx = new Date().getDay();
     const today = MIDI_MENU.days[todayIdx];
@@ -65,8 +72,10 @@
     const holder = $("secSaison");
     if (!holder || !SEASONAL_SPECIALS || !SEASONAL_SPECIALS.enabled || !SEASONAL_SPECIALS.items.length) {
       if (holder) holder.style.display = "none";
+      setChip("secSaison", false);
       return;
     }
+    setChip("secSaison", true);
     holder.innerHTML = `
       <div class="menu-section-head">
         <span class="icon">🌱</span>
@@ -122,8 +131,10 @@
     const holder = $("secMenus");
     if (!holder || !SET_MENUS || !SET_MENUS.enabled || !SET_MENUS.menus.length) {
       if (holder) holder.style.display = "none";
+      setChip("secMenus", false);
       return;
     }
+    setChip("secMenus", true);
     holder.innerHTML = `
       <div class="menu-section-head">
         <span class="icon">🥂</span>
@@ -155,7 +166,8 @@
   /* ---------- 酒水单 ---------- */
   function renderDrinks() {
     const holder = $("secBoissons");
-    if (!holder || !DRINKS_MENU || !DRINKS_MENU.enabled) { if (holder) holder.style.display = "none"; return; }
+    if (!holder || !DRINKS_MENU || !DRINKS_MENU.enabled) { if (holder) holder.style.display = "none"; setChip("secBoissons", false); return; }
+    setChip("secBoissons", true);
     holder.innerHTML = `
       <div class="menu-section-head">
         <span class="icon">🍵</span>
@@ -197,7 +209,7 @@
         text.innerHTML = "🥡 <strong>Mode à l'emporter activé</strong> — vous pouvez commander en ligne ci-dessous.";
         toggle.textContent = "🍽️ Je suis à table";
       } else {
-        text.innerHTML = "🍽️ <strong>Vous êtes à table ?</strong> Ce menu sert à consulter nos plats — commandez directement auprès de notre personnel, pas besoin de payer en ligne.";
+        text.innerHTML = "🍽️ <strong>Vous êtes à table ?</strong> Ce menu sert à consulter — commandez auprès de notre personnel, sans payer en ligne.";
         toggle.textContent = "🥡 Je commande à l'emporter";
       }
     }

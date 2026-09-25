@@ -183,6 +183,13 @@ button { font-family: inherit; cursor: pointer; }
   color: #fff; font-size: .85rem; padding: 7px 16px; border-radius: 999px;
   border: 1px solid rgba(201, 162, 39, .4);
 }
+/* 第二张"探头"照片，营造相片叠放的层次感 */
+.hero-frame-secondary {
+  position: absolute; z-index: 1; width: min(230px, 52%);
+  top: -34px; right: -6px; transform: rotate(-7deg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .5);
+}
+.hero-frame { z-index: 2; }
 .hero::after {
   content: "成 都";
   position: absolute; right: -2%; bottom: -6%;
@@ -222,7 +229,7 @@ button { font-family: inherit; cursor: pointer; }
     inset 0 0 0 1px rgba(255, 255, 255, .22);
 }
 .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
-.btn-ghost { border: 1.5px solid rgba(255, 255, 255, .55); color: #fff; }
+.btn-ghost { background: none; border: 1.5px solid rgba(255, 255, 255, .55); color: #fff; }
 .btn-ghost:hover { background: rgba(255, 255, 255, .12); transform: translateY(-2px); }
 
 .hero-badges { display: flex; gap: 26px; margin-top: 48px; flex-wrap: wrap; }
@@ -272,6 +279,42 @@ button { font-family: inherit; cursor: pointer; }
 .about-points { list-style: none; margin: 26px 0 34px; display: grid; gap: 14px; }
 .about-points li { display: flex; gap: 12px; align-items: flex-start; font-weight: 500; }
 .about-points li::before { content: "•"; color: var(--gold); font-size: 1.4rem; line-height: 1.2; }
+
+/* ============================================================
+   秋季火锅推广板块
+   ============================================================ */
+.fondue-section { padding: 90px 0; background: #fff; }
+.fondue-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 64px; align-items: center; }
+.fondue-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.fondue-photos img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 18px;
+  aspect-ratio: 3 / 4; box-shadow: 0 24px 50px rgba(0,0,0,.16);
+}
+.fondue-photos img:nth-child(2) { margin-top: 32px; }
+.fondue-price-badge {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  background: var(--red-soft); color: var(--red); font-weight: 700;
+  padding: 6px 16px; border-radius: 999px; margin: 4px 0 22px; font-size: .95rem;
+}
+@media (max-width: 900px) {
+  .fondue-section { padding: 60px 0; }
+  .fondue-grid { grid-template-columns: 1fr; gap: 26px; }
+  .fondue-photos img:nth-child(2) { margin-top: 0; }
+}
+
+/* 预约弹层：普通订位 / 火锅订位 切换 */
+.reserve-tabs { display: flex; gap: 10px; margin-bottom: 18px; }
+.reserve-tab {
+  flex: 1; border: 1.5px solid var(--line); background: #fff; border-radius: 12px;
+  padding: 12px 10px; font-weight: 600; font-size: .92rem; color: var(--ink-soft);
+  transition: all .2s;
+}
+.reserve-tab:hover { border-color: var(--red); }
+.reserve-tab.active { border-color: var(--red); color: var(--red); background: var(--red-soft); }
+.fondue-note {
+  background: var(--gold-soft); border: 1px solid #E5D9A8; border-radius: 12px;
+  padding: 12px 16px; font-size: .9rem; margin-bottom: 20px; line-height: 1.5;
+}
 
 /* ============================================================
    菜单卡片（PDF 下载）
@@ -612,6 +655,7 @@ input.invalid, select.invalid { border-color: var(--red); background: #FDF3F2; }
   .hero-content { padding: 70px 0 10px; }
   .hero-visual { padding-bottom: 60px; }
   .hero-frame { transform: none; }
+  .hero-frame-secondary { display: none; }
   .order-layout { grid-template-columns: 1fr; }
   .cart-panel { display: none; }
   .cart-fab { display: inline-flex; }
@@ -831,9 +875,11 @@ input.invalid, select.invalid { border-color: var(--red); background: #FDF3F2; }
 body:not(.takeaway-mode) .link-order { color: var(--ink-soft); }
 body:not(.takeaway-mode) .link-order:hover { color: var(--ink-soft); }
 
-/* 堂食 / 外带提示条 */
+/* 堂食 / 外带提示条
+   不常驻置顶：只在进入页面时提醒一次，滚动后随内容一起划走。
+   这样滚动浏览菜单时，屏幕上只有下面的分类导航条常驻，不会互相遮挡、
+   也不会在手机上占掉太多屏幕空间。锁定下单的功能不受影响（见 menu-qr.js）。 */
 .dine-mode-bar {
-  position: sticky; top: 72px; z-index: 60;
   background: var(--gold-soft); border-bottom: 1px solid #E5D9A8;
   transition: background .2s, border-color .2s;
 }
@@ -852,9 +898,9 @@ body.takeaway-mode .dine-mode-bar { background: #E3F2E8; border-bottom-color: #B
 body.takeaway-mode .dine-mode-toggle { background: var(--ink-soft); }
 body.takeaway-mode .dine-mode-toggle:hover { background: var(--ink); }
 @media (max-width: 720px) {
-  .dine-mode-bar { top: 71px; }
-  .dine-mode-inner { flex-direction: column; align-items: stretch; text-align: center; }
-  .dine-mode-toggle { width: 100%; }
+  .dine-mode-inner { padding: 9px 0; gap: 10px; }
+  .dine-mode-text { font-size: .78rem; line-height: 1.35; }
+  .dine-mode-toggle { padding: 7px 14px; font-size: .76rem; }
 }
 
 /* Menu Midi */
