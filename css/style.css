@@ -167,6 +167,7 @@ button { font-family: inherit; cursor: pointer; }
   gap: 56px; align-items: center; width: min(1160px, 92%); margin: 0 auto;
 }
 .hero-visual { display: flex; justify-content: center; position: relative; z-index: 2; }
+.hero-visual-mobile { display: none; }
 .hero-frame {
   position: relative; width: min(440px, 100%);
   border-radius: 24px; padding: 10px;
@@ -684,6 +685,8 @@ input.invalid, select.invalid { border-color: var(--red); background: #FDF3F2; }
   .hero-visual { padding-bottom: 60px; }
   .hero-frame { transform: none; }
   .hero-frame-secondary { display: none; }
+  .hero-visual { display: none; }
+  .hero-visual-mobile { display: flex; justify-content: center; margin: 24px 0 30px; }
   .order-layout { grid-template-columns: 1fr; }
   .cart-panel { display: none; }
   .cart-fab { display: inline-flex; }
