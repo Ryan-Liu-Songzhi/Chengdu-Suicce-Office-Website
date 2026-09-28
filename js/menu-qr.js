@@ -127,7 +127,7 @@
                 <div class="dish-desc">${item.desc}</div>
                 <div class="dish-foot">
                   <span class="dish-price">${item.oldPrice ? `<span class="old-price">${item.oldPrice.toFixed(2)}</span>` : ""}<span class="${item.oldPrice ? "promo-now" : ""}">${item.price.toFixed(2)}</span> <span class="cur">CHF</span></span>
-                  ${item.soldOut ? "" : `<a class="link-order" href="commander.html#dish-${item.no}">Commander →</a>`}
+                  ${item.soldOut ? "" : item.dineInOnly ? `<span class="dish-note">Sur place uniquement</span>` : `<a class="link-order" href="commander.html#dish-${item.no}">Commander →</a>`}
                 </div>
               </div>
             </article>`).join("")}

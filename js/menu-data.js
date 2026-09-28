@@ -108,6 +108,8 @@ const MENU_DATA = [
       { no: "52", name: "Canard laqué parfumé à l'orange", nameCn: "香橙鸭", desc: "Sauce à l'orange parfumée", price: 24, spicy: false, photo: "", soldOut: false },
       { no: "53", name: "Canard au curry rouge", nameCn: "红咖喱鸭", desc: "Curry rouge au lait de coco", price: 24, spicy: true, photo: "n53.png", soldOut: false },
       { no: "54", name: "Canard sauté à la façon Sichuan", nameCn: "四川鸭", desc: "Wok épicé à la sichuanaise", price: 24, spicy: true, photo: "", soldOut: false },
+      { no: "55", name: "Canard sur ardoise", nameCn: "铁板鸭", desc: "Servi grésillant sur plaque chaude", price: 25, spicy: false, photo: "", soldOut: false },
+      { no: "56", name: "Demi-canard laqué avec crêpes", nameCn: "北京鸭", desc: "Façon pékinoise, servi avec crêpes, sauce hoisin et légumes", price: 28, spicy: false, photo: "n56.jpg", soldOut: false, dineInOnly: true },
     ]
   },
   {
@@ -162,7 +164,8 @@ const MENU_DATA = [
     categoryCn: "特色菜",
     icon: "🌶️",
     items: [
-      { no: "87", name: "Porc cinq épices", nameCn: "椒盐排骨", desc: "Travers de porc sel et poivre", price: 25, spicy: true, photo: "", soldOut: false },
+      { no: "85", name: "Plateau de porc mixte", nameCn: "猪肉拼盘", desc: "Assortiment de porc à partager", price: 28, spicy: false, photo: "", soldOut: false },
+      { no: "86", name: "Porc cinq épices", nameCn: "椒盐排骨", desc: "Travers de porc sel et poivre", price: 25, spicy: true, photo: "", soldOut: false },
       { no: "91", name: "Ma Po Tofu", nameCn: "香辣豆腐", desc: "Tofu épicé du Sichuan", price: 23, spicy: true, photo: "plat3.jpg", soldOut: false },
       { no: "92", name: "Tofu maison", nameCn: "特色豆腐", desc: "Tofu spécial du chef", price: 23, spicy: false, photo: "n92.jpg", soldOut: false },
       { no: "93", name: "Cuisses de grenouilles cinq épices", nameCn: "椒盐田鸡", desc: "Sel et poivre, cinq épices", price: 26, spicy: true, photo: "", soldOut: false },

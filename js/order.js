@@ -15,9 +15,13 @@
   const MONTH_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 
   // 按编号快速查找菜品；空分类（items 为空）自动隐藏
+  // dineInOnly 的菜（比如整只/半只烤鸭这类不适合打包外带的菜）不在线上点餐页出现，
+  // 只会显示在扫码堂食菜单 menu.html 里（见 js/menu-qr.js）
   const ITEM_BY_NO = {};
-  MENU_DATA.forEach((cat) => cat.items.forEach((it) => (ITEM_BY_NO[it.no] = it)));
-  const CATS = MENU_DATA.filter((cat) => cat.items.length > 0);
+  MENU_DATA.forEach((cat) => cat.items.forEach((it) => { if (!it.dineInOnly) ITEM_BY_NO[it.no] = it; }));
+  const CATS = MENU_DATA
+    .map((cat) => ({ ...cat, items: cat.items.filter((it) => !it.dineInOnly) }))
+    .filter((cat) => cat.items.length > 0);
   const SIG = C.signatureDish && C.signatureDish.enabled ? C.signatureDish : null;
 
   /* ---------- 购物车状态 ---------- */

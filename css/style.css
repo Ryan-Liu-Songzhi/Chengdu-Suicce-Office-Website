@@ -919,6 +919,8 @@ input.invalid, select.invalid { border-color: var(--red); background: #FDF3F2; }
 .link-order:hover { color: var(--red-dark); }
 body:not(.takeaway-mode) .link-order { color: var(--ink-soft); }
 body:not(.takeaway-mode) .link-order:hover { color: var(--ink-soft); }
+/* 只能堂食点的菜（dineInOnly），扫码菜单上不显示"Commander"，改这个提示 */
+.dish-note { color: var(--ink-soft); font-size: .85rem; font-style: italic; font-family: var(--font-accent); white-space: nowrap; }
 
 /* 堂食 / 外带提示条
    不常驻置顶：只在进入页面时提醒一次，滚动后随内容一起划走。
