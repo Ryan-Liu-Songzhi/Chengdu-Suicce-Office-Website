@@ -52,8 +52,8 @@
     const slots = [];
     ranges.forEach(([open, close]) => {
       const lastSlot = toMin(close) - R.lastSeatingBeforeClose;
-      let t = Math.ceil(Math.max(toMin(open), earliest) / 30) * 30;
-      for (; t <= lastSlot; t += 30) slots.push(toHM(t));
+      let t = Math.ceil(Math.max(toMin(open), earliest) / 15) * 15;
+      for (; t <= lastSlot; t += 15) slots.push(toHM(t));
     });
     return slots;
   }
@@ -170,6 +170,17 @@
     ].filter(Boolean).join("\n");
   }
 
+  // 打印到厨房/前台：尽力而为，失败也不影响正常提交预约（Formspree 邮件才是主渠道）
+  function printToKitchen(r) {
+    const endpoint = R.printEndpoint;
+    if (!R.printEnabled || !endpoint) return;
+    fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(r)
+    }).catch((err) => console.warn("Impression réservation indisponible :", err));
+  }
+
   async function submitReservation(r) {
     const endpoint = R.endpoint;
     if (endpoint) {
@@ -213,6 +224,7 @@
     btn.textContent = "Envoi en cours…";
     try {
       await submitReservation(r);
+      printToKitchen(r);
     } catch (err) {
       btn.disabled = false;
       btn.textContent = "Envoyer ma demande de réservation";

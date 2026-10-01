@@ -197,7 +197,11 @@ const SITE_CONFIG = {
     leadTimeMinutes: 45,
     lastSeatingBeforeClose: 60,
     maxPeople: 20,
-    endpoint: "https://formspree.io/f/mkodvvab"
+    endpoint: "https://formspree.io/f/mkodvvab",
+    /* 厨房/前台打印预约单（芯烨云），跟在线订单打印同一台打印机。
+       想暂停就把下面改成 false。 */
+    printEnabled: true,
+    printEndpoint: "/.netlify/functions/print-reservation"
   },
 
   /* ------------------------------------------------------------
